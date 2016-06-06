@@ -15,6 +15,7 @@ Script for downloading many ip blocklist and merge in one ipset, using iptable a
     `apt install wget`  
 
 #Usage:  
+Edit the script config section acordingly to your needs. (ex. location of iptables and ipset, wich blocklist to use, etc..)  
 `sh CreateBlocklist.sh`  
 Optional:  
 Add it to cron `crontab -e`  
