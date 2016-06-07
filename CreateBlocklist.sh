@@ -42,6 +42,9 @@ FIREHOL_ABUSERS30D=0
 YOYO_ADLIST=1
 #____________________________
 
+##Enable to remove specified ip from list
+ENABLE_REMOVING=1
+
 ###Change accordingly to your system
 IPT="/sbin/iptables"
 IPTRST="/sbin/iptables-restore"
@@ -119,8 +122,13 @@ printf "\n Remove comments etc."
 cat $BASE/$FOLDER_BL/bl.tmp | sort | uniq > $BASE/$FOLDER_BL/bl1.tmp
 sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/bl2.tmp
 
-### use this to remove ipadress or range from the blocklist (if needed)
-sed '/192\.168\.0\.0\/16/d' $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
+if [ $ENABLE_REMOVING -ne 0 ]; then
+        ### use this to remove ipadress or range from the blocklist (if needed)
+        sed '/192\.168\.0\.0\/16/d' $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
+else
+        mv $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
+fi
+
 
 printf "\n Amount of lines in final blocklist %s \n"  `cat $BASE/$FOLDER_BL/blocklist | wc -l`
 echo "Starting At:"
