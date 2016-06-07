@@ -44,6 +44,10 @@ YOYO_ADLIST=1
 
 ##Enable to remove specified ip from list
 ENABLE_REMOVING=1
+##Set the iptables chain to block on
+IPTABLESCHAIN="FORWARD"
+##Block on source (src) or destination (dst) ot both (src,dst)
+BLOCKON="src,dst"
 
 ###Change accordingly to your system
 IPT="/sbin/iptables"
@@ -55,6 +59,8 @@ BLACKLIST="$BASE/$FOLDER_BL/blocklist"
 #___________________________________
 
 rm $BASE/$FOLDER_BL/bl.tmp
+rm $BASE/$FOLDER_BL/bl1.tmp
+rm $BASE/$FOLDER_BL/b2.tmp
 rm $BASE/$FOLDER_BL/blocklist
 
 if [ $FIREHOL_LEVEL1 -ne 0 ]; then
@@ -106,7 +112,6 @@ if [ $FIREHOL_ABUSERS30D -ne 0 ]; then
         rm $BASE/$FOLDER_BL/firehol_abusers_30d.tmp
 fi
 
-
 if [ $YOYO_ADLIST -ne 0 ]; then
         wget -t 3 --no-verbose "http://pgl.yoyo.org/adservers/iplist.php?ipformat=plain&showintro=0&mimetype=plaintext" -O $BASE/$FOLDER_BL/yoyo_ad.tmp
         cat $BASE/$FOLDER_BL/yoyo_ad.tmp >> $BASE/$FOLDER_BL/bl.tmp
@@ -116,8 +121,6 @@ fi
 
 printf "\n Amount of lines in the combined blocklist before any cleanup is done %s \n"  `cat $BASE/$FOLDER_BL/bl.tmp | wc -l`
 printf "\n Remove comments etc."
-
-
 
 cat $BASE/$FOLDER_BL/bl.tmp | sort | uniq > $BASE/$FOLDER_BL/bl1.tmp
 sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/bl2.tmp
@@ -142,4 +145,4 @@ $IPSET flush blocklist
 echo "Finish At:"
 date
 
-$IPT -I FORWARD -m set --match-set blocklist src,dst -j DROP
+$IPT -I $IPTABLESCHAIN -m set --match-set blocklist $BLOCKON -j DROP
