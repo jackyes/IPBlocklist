@@ -117,11 +117,13 @@ printf "\n Remove comments etc."
 
 
 cat $BASE/$FOLDER_BL/bl.tmp | sort | uniq > $BASE/$FOLDER_BL/bl1.tmp
-sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/blocklist
+sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/bl2.tmp
+
+### use this to remove ipadress or range from the blocklist (if needed)
+sed '/192\.168\.0\.0\/16/d' $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
 
 printf "\n Amount of lines in final blocklist %s \n"  `cat $BASE/$FOLDER_BL/blocklist | wc -l`
-
-
+echo "Starting At:"
 date
 echo "Adding blocklist to ipset"
 $IPSET create -exist blocklist hash:net hashsize 16777216 maxelem 16777216
@@ -129,10 +131,7 @@ $IPSET flush blocklist
         for BLACKLIST in `cat $BLACKLIST`; do
                 $IPSET add  blocklist $BLACKLIST
         done
+echo "Finish At:"
 date
 
-### use this to remove ipadress or range from the blocklist (if needed)
-#$IPSET del blocklist 192.168.0.0/16
-
 $IPT -I FORWARD -m set --match-set blocklist src,dst -j DROP
-
