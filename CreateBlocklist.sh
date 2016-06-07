@@ -46,7 +46,7 @@ YOYO_ADLIST=1
 ENABLE_REMOVING=1
 ##Set the iptables chain to block on
 IPTABLESCHAIN="FORWARD"
-##Block on source (src) or destination (dst) ot both (src,dst)
+##Block if ip is blacklisted and present as source (src) or destination (dst) or both (src,dst)
 BLOCKON="src,dst"
 
 ###Change accordingly to your system
