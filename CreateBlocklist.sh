@@ -47,7 +47,7 @@ ENABLE_REMOVING=1
 ##Set the iptables chain to block on
 IPTABLESCHAIN="FORWARD"
 ##Block if ip is blacklisted and present as source (src) or destination (dst) or both (src,dst)
-BLOCKON="src,dst"
+BLOCKON="dst"
 
 ###Change accordingly to your system
 IPT="/sbin/iptables"
