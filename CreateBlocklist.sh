@@ -61,7 +61,7 @@ WHITELIST="$BASE/$FOLDER_BL/whitelist" #Manually create this file
 
 rm $BASE/$FOLDER_BL/bl.tmp
 rm $BASE/$FOLDER_BL/bl1.tmp
-rm $BASE/$FOLDER_BL/b2.tmp
+rm $BASE/$FOLDER_BL/bl2.tmp
 rm $BASE/$FOLDER_BL/blocklist
 
 if [ $FIREHOL_LEVEL1 -ne 0 ]; then
