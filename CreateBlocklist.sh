@@ -56,6 +56,7 @@ IPSET="/sbin/ipset"
 BASE="/etc"
 FOLDER_BL="sysconfig"
 BLACKLIST="$BASE/$FOLDER_BL/blocklist"
+WHITELIST="$BASE/$FOLDER_BL/whitelist" #Manually create this file
 #___________________________________
 
 rm $BASE/$FOLDER_BL/bl.tmp
@@ -127,10 +128,12 @@ sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/bl2.tmp
 
 if [ $ENABLE_REMOVING -ne 0 ]; then
         ### use this to remove ipadress or range from the blocklist (if needed)
-        sed '/192\.168\.0\.0\/16/d' $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
+        ### Add ip(s), one per line, in $BASE/$FOLDER_BL/whitelist
+        awk '{if (f==1) { r[$0] } else if (! ($0 in r)) { print $0 } } ' f=1 $BASE/$FOLDER_BL/whitelist f=2 $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
 else
         mv $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
 fi
+
 
 
 printf "\n Amount of lines in final blocklist %s \n"  `cat $BASE/$FOLDER_BL/blocklist | wc -l`
