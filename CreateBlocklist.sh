@@ -42,8 +42,14 @@ FIREHOL_ABUSERS30D=0
 YOYO_ADLIST=1
 #____________________________
 
-##Enable to remove specified ip from list
+##Enable to remove specified ip from list (if 1 create the whiteliste file, if 2 add the ip in the next section)
+##NOTE: if you have a large number of ip to whitelist it's better to use the 1 option and create the whiteliste file
 ENABLE_REMOVING=1
+##Add here ip to COMPLETE whitelist (all port) if ENABLE_REMOVING=2
+if [ $ENABLE_REMOVING == "2" ]; then
+        declare -a WhitelistArray=( 192.168.1.0/24 8.8.8.8 8.8.4.4 216.146.46.10 216.146.46.11 93.184.219.82 93.184.221.133)
+fi
+
 ##Set the iptables chain to block on
 IPTABLESCHAIN="FORWARD"
 ##Block if ip is blacklisted and present as source (src) or destination (dst) or both (src,dst)
@@ -126,7 +132,7 @@ printf "\n Remove comments etc."
 cat $BASE/$FOLDER_BL/bl.tmp | sort | uniq > $BASE/$FOLDER_BL/bl1.tmp
 sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/bl2.tmp
 
-if [ $ENABLE_REMOVING -ne 0 ]; then
+if [ $ENABLE_REMOVING == 1 ]; then
         ### use this to remove ipadress or range from the blocklist (if needed)
         ### Add ip(s), one per line, in $BASE/$FOLDER_BL/whitelist
         awk '{if (f==1) { r[$0] } else if (! ($0 in r)) { print $0 } } ' f=1 $BASE/$FOLDER_BL/whitelist f=2 $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
@@ -149,3 +155,9 @@ echo "Finish At:"
 date
 
 $IPT -I $IPTABLESCHAIN -m set --match-set blocklist $BLOCKON -j DROP
+if [ $ENABLE_REMOVING == "2" ]; then
+        for i in "${WhitelistArray[@]}"
+                do
+                $IPT -I $IPTABLESCHAIN -s $1 -j ACCEPT
+        done
+fi
