@@ -8,11 +8,29 @@ Script for downloading many ip blocklist and merge in one ipset, using iptable a
   On Debian:  
     `apt install ipset`
 * **iptables**
+* **git**  
+  On RHEL/CentOS:  
+    `yum install git`  
+  On Debian:  
+    `apt install git` 
 * **wget**  
   On RHEL/CentOS:  
     `yum install wget`  
   On Debian:  
-    `apt install wget`  
+    `apt install wget` 
+* **iprange**  
+  On RHEL/CentOS:  
+    `yum install autoconf automake`  
+  On Debian:  
+    `apt install autoconf automake` 
+      
+    `git clone https://github.com/firehol/iprange.git`  
+    `cd iprange`  
+    `./autogen.sh`    
+    `./configure && make && make install`    
+    
+
+
 
 #Usage:  
 Edit the script config section acordingly to your needs. (ex. location of iptables and ipset, wich blocklist to use, etc..)  
