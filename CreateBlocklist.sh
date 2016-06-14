@@ -46,7 +46,7 @@ YOYO_ADLIST=1
 ##NOTE: if you have a large number of ip to whitelist it's better to use the 1 option and create the whiteliste file
 ENABLE_REMOVING=2
 ##Add here ip to whitelist (all port). Only if ENABLE_REMOVING is set on 2
-if [ $ENABLE_REMOVING == "2" ]; then
+if [ $ENABLE_REMOVING -eq "2" ]; then
         declare -a WhitelistArray=( 192.168.1.0/24 8.8.8.8 8.8.4.4 216.146.46.10 216.146.46.11 93.184.219.82 93.184.221.133)
 fi
 
