@@ -16,7 +16,7 @@ FIREHOL_LEVEL2=1
 # It includes IPs than have been reported or detected in the last 30 days.
 # (includes: bruteforceblocker ciarmy dragon_http dragon_sshpauth dragon_vncprobe dshield_30d dshield_top_1000
 # malc0de maxmind_proxy_fraud myip openbl_30d shunlist snort_ipfilter sslbl_aggressive talosintel_ipfilter zeus vxvault)
-FIREHOL_LEVEL3=1
+FIREHOL_LEVEL3=0
 #____________________________
 # An ipset made from blocklists that track attacks, but may include a large number of false positives.
 # (includes: cleanmx_viruses blocklist_net_ua botscout_30d cruzit_web_attacks cybercrime haley_ssh
