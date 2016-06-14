@@ -27,7 +27,7 @@ Script for downloading many ip blocklist and merge in one ipset, using iptable a
     `git clone https://github.com/firehol/iprange.git`  
     `cd iprange`  
     `./autogen.sh`    
-    `./configure && make && make install`    
+    `./configure --disable-man && make && make install`    
     
 
 
