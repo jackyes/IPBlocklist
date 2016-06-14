@@ -64,6 +64,7 @@ BASE="/etc"
 FOLDER_BL="sysconfig"
 BLACKLIST="$BASE/$FOLDER_BL/blocklist"
 WHITELIST="$BASE/$FOLDER_BL/whitelist" #Manually create this file
+PATHIPTABCONFIG="/root/iptables.save"  #Path to saved config (Generated with iptables-save, evrytime the script runs iptables is restored to normal state) 
 #___________________________________
 
 rm $BASE/$FOLDER_BL/bl.tmp
@@ -158,6 +159,8 @@ $IPSET flush blocklist
         done
 echo " Finish At:"
 date
+
+$IPTRST < $PATHIPTABCONFIG
 
 $IPT -I $IPTABLESCHAIN -m set --match-set blocklist $BLOCKON -j DROP
 if [ $ENABLE_REMOVING -eq "2" ]
