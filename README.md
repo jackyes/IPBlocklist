@@ -20,9 +20,9 @@ Script for downloading many ip blocklist and merge in one ipset, using iptable a
     `apt install wget` 
 * **iprange**  
   On RHEL/CentOS:  
-    `yum install autoconf automake`  
+    `yum install autoconf automake make`  
   On Debian:  
-    `apt install autoconf automake` 
+    `apt install autoconf automake make` 
       
     `git clone https://github.com/firehol/iprange.git`  
     `cd iprange`  
