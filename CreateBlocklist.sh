@@ -139,7 +139,7 @@ if [ $ENABLE_REMOVING == 1 ]; then
         ### Add ip(s), one per line, in $BASE/$FOLDER_BL/whitelist
         awk '{if (f==1) { r[$0] } else if (! ($0 in r)) { print $0 } } ' f=1 $BASE/$FOLDER_BL/whitelist f=2 $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist1
 else
-        mv $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist1
+        mv $BASE/$FOLDER_BL/bl2.tmp $BASE/$FOLDER_BL/blocklist1
 fi
 
 $IPRNG --optimize $BASE/$FOLDER_BL/blocklist1 > $BASE/$FOLDER_BL/blocklist
