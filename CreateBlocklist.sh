@@ -58,6 +58,7 @@ BLOCKON="dst"
 ###Change accordingly to your system
 IPT="/sbin/iptables"
 IPTRST="/sbin/iptables-restore"
+IPRNG="/usr/local/bin/iprange"
 IPSET="/sbin/ipset"
 BASE="/etc"
 FOLDER_BL="sysconfig"
@@ -68,6 +69,7 @@ WHITELIST="$BASE/$FOLDER_BL/whitelist" #Manually create this file
 rm $BASE/$FOLDER_BL/bl.tmp
 rm $BASE/$FOLDER_BL/bl1.tmp
 rm $BASE/$FOLDER_BL/bl2.tmp
+rm $BASE/$FOLDER_BL/blocklist1
 rm $BASE/$FOLDER_BL/blocklist
 
 if [ $FIREHOL_LEVEL1 -ne 0 ]; then
@@ -135,12 +137,12 @@ sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/bl2.tmp
 if [ $ENABLE_REMOVING == 1 ]; then
         ### use this to remove ipadress or range from the blocklist (if needed)
         ### Add ip(s), one per line, in $BASE/$FOLDER_BL/whitelist
-        awk '{if (f==1) { r[$0] } else if (! ($0 in r)) { print $0 } } ' f=1 $BASE/$FOLDER_BL/whitelist f=2 $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
+        awk '{if (f==1) { r[$0] } else if (! ($0 in r)) { print $0 } } ' f=1 $BASE/$FOLDER_BL/whitelist f=2 $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist1
 else
-        mv $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist
+        mv $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist1
 fi
 
-
+$IPRNG --optimize $BASE/$FOLDER_BL/blocklist1 > $BASE/$FOLDER_BL/blocklist
 
 printf "\n Amount of lines in final blocklist %s \n"  `cat $BASE/$FOLDER_BL/blocklist | wc -l`
 echo "Starting At:"
