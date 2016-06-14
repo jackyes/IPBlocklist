@@ -34,9 +34,10 @@ Script for downloading many ip blocklist and merge in one ipset, using iptable a
 
 #Usage:  
 Edit the script config section acordingly to your needs. (ex. location of iptables and ipset, wich blocklist to use, etc..)  
-`sh CreateBlocklist.sh`  
+`./CreateBlocklist.sh`  
 Optional:  
 Add it to cron `crontab -e`  
+(Is suggested to create copy of your iptables rules and reset it before running this script, use `iptables-save` and `iptables-restore`)  
 Add this line:  
 `30 2 * * * sh /path/to/script/CreateBlocklist.sh > /path/to/script/Create.log`  
 Execute the script at 2.30 AM everyday and save output to /path/to/script/Create.log
