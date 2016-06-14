@@ -134,7 +134,8 @@ printf "\n Remove comments etc."
 cat $BASE/$FOLDER_BL/bl.tmp | sort | uniq > $BASE/$FOLDER_BL/bl1.tmp
 sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/bl2.tmp
 
-if [ $ENABLE_REMOVING == 1 ]; then
+if [ $ENABLE_REMOVING -eq 1 ]
+then
         ### use this to remove ipadress or range from the blocklist (if needed)
         ### Add ip(s), one per line, in $BASE/$FOLDER_BL/whitelist
         awk '{if (f==1) { r[$0] } else if (! ($0 in r)) { print $0 } } ' f=1 $BASE/$FOLDER_BL/whitelist f=2 $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist1
@@ -157,7 +158,8 @@ echo "Finish At:"
 date
 
 $IPT -I $IPTABLESCHAIN -m set --match-set blocklist $BLOCKON -j DROP
-if [ $ENABLE_REMOVING == "2" ]; then
+if [ $ENABLE_REMOVING -eq "2" ]
+then
         for i in "${WhitelistArray[@]}"
                 do
                 $IPT -I $IPTABLESCHAIN -s $1 -j ACCEPT
