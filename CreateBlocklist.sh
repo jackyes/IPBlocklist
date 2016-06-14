@@ -144,17 +144,19 @@ else
 fi
 
 $IPRNG --optimize $BASE/$FOLDER_BL/blocklist1 > $BASE/$FOLDER_BL/blocklist
-
-printf "\n Amount of lines in final blocklist %s \n"  `cat $BASE/$FOLDER_BL/blocklist | wc -l`
-echo "Starting At:"
+echo ""
+echo " Ammount of line and total unique ip blocked (line,numer_of_ip):"
+echo  `$IPRNG -C $BASE/$FOLDER_BL/blocklist`
+echo ""
+echo " Starting At:"
 date
-echo "Adding blocklist to ipset"
+echo " Adding blocklist to ipset"
 $IPSET create -exist blocklist hash:net hashsize 16777216 maxelem 16777216
 $IPSET flush blocklist
         for BLACKLIST in `cat $BLACKLIST`; do
                 $IPSET add  blocklist $BLACKLIST
         done
-echo "Finish At:"
+echo " Finish At:"
 date
 
 $IPT -I $IPTABLESCHAIN -m set --match-set blocklist $BLOCKON -j DROP
