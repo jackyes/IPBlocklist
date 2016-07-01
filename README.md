@@ -68,6 +68,10 @@ or firehol_anonymous) . (includes: hphosts_emd hphosts_exp hphosts_fsa hphosts_h
 maxmind_proxy_fraud myip pushing_inertia_blocklist stopforumspam_toxic)
 - [x] FIREHOL_ANONYMOUS  
 An ipset that includes all the anonymizing IPs of the world. (includes: anonymous bm_tor dm_tor firehol_proxies tor_exits)
+- [x] FIREHOL_ABUSERS1D  
+An ipset made from blocklists that track abusers in the last 24 hours.  
+(includes: botscout_1d cleantalk_new_1d cleantalk_updated_1d php_commenters_1d php_dictionary_1d   
+php_harvesters_1d php_spammers_1d stopforumspam_1d) 
 - [x] FIREHOL_ABUSERS30D  
 An ipset made from blocklists that track abusers in the last 30 days.
 (includes: cleantalk_new_30d cleantalk_updated_30d php_commenters_30d php_dictionary_30d php_harvesters_30d
