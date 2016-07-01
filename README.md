@@ -24,7 +24,8 @@ Script for downloading many ip blocklist and merge in one ipset, using iptable a
     `yum groupinstall "Development tools"`  
   On Debian:  
     `apt install autoconf automake make build-essential` 
-      
+  
+  On both:      
     `git clone https://github.com/firehol/iprange.git`  
     `cd iprange`  
     `./autogen.sh`    
