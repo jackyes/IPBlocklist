@@ -30,8 +30,18 @@ FIREHOL_LEVEL4=0
 # maxmind_proxy_fraud myip pushing_inertia_blocklist stopforumspam_toxic)
 FIREHOL_WEBSERVER=0
 #____________________________
-# An ipset that includes all the anonymizing IPs of the world. (includes: anonymous bm_tor dm_tor firehol_proxies tor_exits)
+# An ipset made from all sources that track open proxies. 
+# It includes IPs reported or detected in the last 30 days. (includes: iblocklist_proxies maxmind_proxy_fraud proxylists_30d 
+# proxyrss_30d proxz_30d proxyspy_30d ri_connect_proxies_30d ri_web_proxies_30d socks_proxy_30d sslproxies_30d xroxy_30d) 
+FIREHOL_PROXIES=0
+#____________________________
+# An ipset that includes all the anonymizing IPs of the world.
+# (includes: anonymous bm_tor dm_tor firehol_proxies tor_exits)
 FIREHOL_ANONYMOUS=0
+#____________________________
+# An ipset made from blocklists that track abusers in the last 24 hours. (includes: botscout_1d cleantalk_new_1d 
+# cleantalk_updated_1d php_commenters_1d php_dictionary_1d php_harvesters_1d php_spammers_1d stopforumspam_1d) 
+FIREHOL_ABUSERS1D=0
 #____________________________
 # An ipset made from blocklists that track abusers in the last 30 days.
 # (includes: cleantalk_new_30d cleantalk_updated_30d php_commenters_30d php_dictionary_30d php_harvesters_30d
@@ -108,12 +118,27 @@ if [ $FIREHOL_WEBSERVER -ne 0 ]; then
         rm $BASE/$FOLDER_BL/firehol_webserver.tmp
 fi
 
+if [ $FIREHOL_PROXIES -ne 0 ]; then
+        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_proxies.netset -O $BASE/$FOLDER_BL/firehol_proxies.tmp
+        cat $BASE/$FOLDER_BL/firehol_proxies.tmp >> $BASE/$FOLDER_BL/bl.tmp
+        printf "\n Amount of lines in firehol_proxies  %s \n"  `cat $BASE/$FOLDER_BL/firehol_proxies.tmp | wc -l`
+        rm $BASE/$FOLDER_BL/firehol_proxies.tmp
+fi
+
 if [ $FIREHOL_ANONYMOUS -ne 0 ]; then
         wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_anonymous.netset -O $BASE/$FOLDER_BL/firehol_anonymous.tmp
         cat $BASE/$FOLDER_BL/firehol_anonymous.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_anonymous  %s \n"  `cat $BASE/$FOLDER_BL/firehol_anonymous.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_anonymous.tmp
 fi
+
+if [ $FIREHOL_ABUSERS1D -ne 0 ]; then
+        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_abusers_1d.netset -O $BASE/$FOLDER_BL/firehol_abusers_1d.tmp
+        cat $BASE/$FOLDER_BL/firehol_abusers_1d.tmp >> $BASE/$FOLDER_BL/bl.tmp
+        printf "\n Amount of lines in firehol_abusers_1d  %s \n"  `cat $BASE/$FOLDER_BL/firehol_abusers_1d.tmp | wc -l`
+        rm $BASE/$FOLDER_BL/firehol_abusers_1d.tmp
+fi
+
 
 if [ $FIREHOL_ABUSERS30D -ne 0 ]; then
         wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_abusers_30d.netset -O $BASE/$FOLDER_BL/firehol_abusers_30d.tmp
