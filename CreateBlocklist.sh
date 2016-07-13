@@ -56,8 +56,9 @@ YOYO_ADLIST=1
 # Bot or Malware command and control server
 ET_BOTCC=1
 #____________________________
-
-
+# EmergingThreats.net compromised hosts
+ET_COMPROMISED=1
+#____________________________
 
 ##Enable to remove specified ip from list (if 1 create the whiteliste file, if 2 add the ip in the next section)
 ##NOTE: if you have a large number of ip to whitelist it's better to use the 1 option and create the whiteliste file
@@ -168,6 +169,12 @@ if [ $ET_BOTCC -ne 0 ]; then
         rm $BASE/$FOLDER_BL/et_botcc.tmp
 fi
 
+if [ $ET_COMPROMISED -ne 0 ]; then
+        wget -t 3 --no-verbose "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/et_compromised.ipset" -O $BASE/$FOLDER_BL/et_compromised.tmp
+        cat $BASE/$FOLDER_BL/et_compromised.tmp >> $BASE/$FOLDER_BL/bl.tmp
+        printf "\n Amount of lines in ET_COMPROMISED  %s \n"  `cat $BASE/$FOLDER_BL/e | wc -l`
+        rm $BASE/$FOLDER_BL/et_compromised.tmp
+fi
 
 printf "\n Amount of lines in the combined blocklist before any cleanup is done %s \n"  `cat $BASE/$FOLDER_BL/bl.tmp | wc -l`
 printf "\n Remove comments etc."
