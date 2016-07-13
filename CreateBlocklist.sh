@@ -51,6 +51,13 @@ FIREHOL_ABUSERS30D=0
 # List of ip related to advertising and tracking
 YOYO_ADLIST=1
 #____________________________
+# EmergingThreats.net Command and Control IPs These IPs are updates every 24 hours and should be 
+# considered VERY highly reliable indications that a host is communicating with a known and active 
+# Bot or Malware command and control server
+ET_BOTCC=1
+#____________________________
+
+
 
 ##Enable to remove specified ip from list (if 1 create the whiteliste file, if 2 add the ip in the next section)
 ##NOTE: if you have a large number of ip to whitelist it's better to use the 1 option and create the whiteliste file
@@ -153,6 +160,14 @@ if [ $YOYO_ADLIST -ne 0 ]; then
         printf "\n Amount of lines in YOYO_ADLIST  %s \n"  `cat $BASE/$FOLDER_BL/yoyo_ad.tmp | wc -l`
         rm $BASE/$FOLDER_BL/yoyo_ad.tmp
 fi
+
+if [ $ET_BOTCC -ne 0 ]; then
+        wget -t 3 --no-verbose "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/et_botcc.ipset" -O $BASE/$FOLDER_BL/et_botcc.tmp
+        cat $BASE/$FOLDER_BL/et_botcc.tmp >> $BASE/$FOLDER_BL/bl.tmp
+        printf "\n Amount of lines in ET_BOTCC  %s \n"  `cat $BASE/$FOLDER_BL/et_botcc.tmp | wc -l`
+        rm $BASE/$FOLDER_BL/et_botcc.tmp
+fi
+
 
 printf "\n Amount of lines in the combined blocklist before any cleanup is done %s \n"  `cat $BASE/$FOLDER_BL/bl.tmp | wc -l`
 printf "\n Remove comments etc."
