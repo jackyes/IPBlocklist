@@ -82,3 +82,7 @@ An ipset made from blocklists that track abusers in the last 30 days.
 php_spammers_30d stopforumspam sblam)
 - [x] YOYO_ADLIST  
 List of ip related to advertising and tracking  
+- [x] ET_BOTCC  
+EmergingThreats.net Command and Control IPs These IPs are updates every 24 hours and should be considered  
+VERY highly reliable indications that a host is communicating with a known and active Bot or Malware  
+command and control server  
