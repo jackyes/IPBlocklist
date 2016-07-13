@@ -172,7 +172,7 @@ fi
 if [ $ET_COMPROMISED -ne 0 ]; then
         wget -t 3 --no-verbose "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/et_compromised.ipset" -O $BASE/$FOLDER_BL/et_compromised.tmp
         cat $BASE/$FOLDER_BL/et_compromised.tmp >> $BASE/$FOLDER_BL/bl.tmp
-        printf "\n Amount of lines in ET_COMPROMISED  %s \n"  `cat $BASE/$FOLDER_BL/e | wc -l`
+        printf "\n Amount of lines in ET_COMPROMISED  %s \n"  `cat $BASE/$FOLDER_BL/et_compromised.tmp | wc -l`
         rm $BASE/$FOLDER_BL/et_compromised.tmp
 fi
 
