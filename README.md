@@ -81,4 +81,6 @@ An ipset made from blocklists that track abusers in the last 30 days.
 (includes: cleantalk_new_30d cleantalk_updated_30d php_commenters_30d php_dictionary_30d php_harvesters_30d
 php_spammers_30d stopforumspam sblam)
 - [x] YOYO_ADLIST  
-List of ip related to advertising and tracking
+List of ip related to advertising and tracking  
+- [ ] BAMBENEK  
+List of ip related to C&C, botnet, etc..
