@@ -68,8 +68,7 @@ This list is to be used on top of firehol_level1, firehol_level2, firehol_level3
 or firehol_anonymous) . (includes: hphosts_emd hphosts_exp hphosts_fsa hphosts_hjk hphosts_psh hphosts_wrz
 maxmind_proxy_fraud myip pushing_inertia_blocklist stopforumspam_toxic)
 - [x] FIREHOL_WEBCLIENT  
-An IP blacklist made from blocklists that track IPs that a web client should never talk to. This list is to be used on top of firehol_level1.  
-(includes: ransomware_online sslbl_aggressive cybercrime atlas_phishing_2d atlas_fastflux_2d dyndns_ponmocup maxmind_proxy_fraud) 
+An IP blacklist made from blocklists that track IPs that a web client should never talk to. This list is to be used on top of firehol_level1. (includes: ransomware_online sslbl_aggressive cybercrime atlas_phishing_2d atlas_fastflux_2d dyndns_ponmocup maxmind_proxy_fraud) 
 - [x] FIREHOL_PROXIES  
 An ipset made from all sources that track open proxies. It includes IPs reported or detected in the last 30 days.  
 (includes: iblocklist_proxies maxmind_proxy_fraud proxylists_30d proxyrss_30d proxz_30d proxyspy_30d ri_connect_proxies_30d   ri_web_proxies_30d socks_proxy_30d sslproxies_30d xroxy_30d) 
