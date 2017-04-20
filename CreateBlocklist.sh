@@ -30,6 +30,10 @@ FIREHOL_LEVEL4=0
 # maxmind_proxy_fraud myip pushing_inertia_blocklist stopforumspam_toxic)
 FIREHOL_WEBSERVER=0
 #____________________________
+#An IP blacklist made from blocklists that track IPs that a web client should never talk to.
+#(includes: ransomware_online sslbl_aggressive cybercrime atlas_phishing_2d atlas_fastflux_2d dyndns_ponmocup maxmind_proxy_fraud)
+FIREHOL_WEBCLIENT=1
+#____________________________
 # An ipset made from all sources that track open proxies. 
 # It includes IPs reported or detected in the last 30 days. (includes: iblocklist_proxies maxmind_proxy_fraud proxylists_30d 
 # proxyrss_30d proxz_30d proxyspy_30d ri_connect_proxies_30d ri_web_proxies_30d socks_proxy_30d sslproxies_30d xroxy_30d) 
@@ -126,6 +130,13 @@ if [ $FIREHOL_WEBSERVER -ne 0 ]; then
         rm $BASE/$FOLDER_BL/firehol_webserver.tmp
 fi
 
+if [ $FIREHOL_WEBCLIENT -ne 0 ]; then
+        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_webclient.netset -O $BASE/$FOLDER_BL/firehol_webclient.tmp
+        cat $BASE/$FOLDER_BL/firehol_webclient.tmp >> $BASE/$FOLDER_BL/bl.tmp
+        printf "\n Amount of lines in firehol_webclient  %s \n"  `cat $BASE/$FOLDER_BL/firehol_webclient.tmp | wc -l`
+        rm $BASE/$FOLDER_BL/firehol_webclient.tmp
+fi
+
 if [ $FIREHOL_PROXIES -ne 0 ]; then
         wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_proxies.netset -O $BASE/$FOLDER_BL/firehol_proxies.tmp
         cat $BASE/$FOLDER_BL/firehol_proxies.tmp >> $BASE/$FOLDER_BL/bl.tmp
@@ -146,7 +157,6 @@ if [ $FIREHOL_ABUSERS1D -ne 0 ]; then
         printf "\n Amount of lines in firehol_abusers_1d  %s \n"  `cat $BASE/$FOLDER_BL/firehol_abusers_1d.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_abusers_1d.tmp
 fi
-
 
 if [ $FIREHOL_ABUSERS30D -ne 0 ]; then
         wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_abusers_30d.netset -O $BASE/$FOLDER_BL/firehol_abusers_30d.tmp
