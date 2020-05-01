@@ -63,6 +63,9 @@ ET_BOTCC=1
 # EmergingThreats.net compromised hosts
 ET_COMPROMISED=1
 #____________________________
+# EmergingThreats.net compromised hosts
+ENERGIZED_IPLIST=1
+#____________________________
 
 ##Enable to remove specified ip from list (if 1 create the whiteliste file, if 2 add the ip in the next section)
 ##NOTE: if you have a large number of ip to whitelist it's better to use the 1 option and create the whiteliste file
@@ -184,6 +187,13 @@ if [ $ET_COMPROMISED -ne 0 ]; then
         cat $BASE/$FOLDER_BL/et_compromised.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in ET_COMPROMISED  %s \n"  `cat $BASE/$FOLDER_BL/et_compromised.tmp | wc -l`
         rm $BASE/$FOLDER_BL/et_compromised.tmp
+fi
+
+if [ $ENERGIZED_IPLIST -ne 0 ]; then
+        wget -t 3 --no-verbose "https://block.energized.pro/extensions/ips/formats/list.txt" -O $BASE/$FOLDER_BL/energ_ips.tmp
+        cat $BASE/$FOLDER_BL/energ_ips.tmp >> $BASE/$FOLDER_BL/bl.tmp
+        printf "\n Amount of lines in ENERGIZED_IPLIST  %s \n"  `cat $BASE/$FOLDER_BL/energ_ips.tmp | wc -l`
+        rm $BASE/$FOLDER_BL/energ_ips.tmp
 fi
 
 printf "\n Amount of lines in the combined blocklist before any cleanup is done %s \n"  `cat $BASE/$FOLDER_BL/bl.tmp | wc -l`
