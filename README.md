@@ -92,3 +92,5 @@ VERY highly reliable indications that a host is communicating with a known and a
 command and control server  
 - [x] ET_COMPROMISED  
 EmergingThreats.net compromised hosts  
+- [x] ENERGIZED_IPLIST  
+energized.pro iplist  
