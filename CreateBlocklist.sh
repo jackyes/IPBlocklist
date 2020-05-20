@@ -63,7 +63,7 @@ ET_BOTCC=1
 # EmergingThreats.net compromised hosts
 ET_COMPROMISED=1
 #____________________________
-# EmergingThreats.net compromised hosts
+# Energized ip list
 ENERGIZED_IPLIST=1
 #____________________________
 
