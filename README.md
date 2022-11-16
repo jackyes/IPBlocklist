@@ -35,6 +35,9 @@ Script for downloading many ip blocklist and merge in one ipset, using iptable a
 
 
 #Usage:  
+  
+Modify BASE and FOLDER_BL variabile or create /etc/sysconfig folder in your system (`mkdir /etc/sysconfig`) 
+  
 Save your iptables rules (will be reloaded each blocklist update):  
 `iptables-save > /root/iptables.save`  
 Edit the script config section acordingly to your needs. (ex. location of iptables and ipset, wich blocklist to use, etc..)  
