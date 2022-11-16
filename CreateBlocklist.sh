@@ -64,7 +64,7 @@ ET_BOTCC=1
 ET_COMPROMISED=1
 #____________________________
 # Energized ip list
-ENERGIZED_IPLIST=1
+ENERGIZED_IPLIST=0
 #____________________________
 
 ##Enable to remove specified ip from list (if 1 create the whiteliste file, if 2 add the ip in the next section)
@@ -72,7 +72,7 @@ ENERGIZED_IPLIST=1
 ENABLE_REMOVING=2
 ##Add here ip to whitelist (all port). Only if ENABLE_REMOVING is set on 2
 if [ $ENABLE_REMOVING -eq "2" ]; then
-        declare -a WhitelistArray=( 192.168.1.0/24 8.8.8.8 8.8.4.4 216.146.46.10 216.146.46.11 93.184.219.82 93.184.221.133)
+        declare -a WhitelistArray=( 192.168.1.0/24 127.0.0.1 8.8.8.8 8.8.4.4 216.146.46.10 216.146.46.11 93.184.219.82 93.184.221.133)
 fi
 
 ##Set the iptables chain to block on
@@ -234,6 +234,6 @@ if [ $ENABLE_REMOVING -eq "2" ]
 then
         for i in "${WhitelistArray[@]}"
                 do
-                $IPT -I $IPTABLESCHAIN -s $1 -j ACCEPT
+                $IPT -I $IPTABLESCHAIN -s $i -j ACCEPT
         done
 fi
