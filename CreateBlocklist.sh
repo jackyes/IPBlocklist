@@ -235,5 +235,6 @@ then
         for i in "${WhitelistArray[@]}"
                 do
                 $IPT -I $IPTABLESCHAIN -s $i -j ACCEPT
+                $IPT -I $IPTABLESCHAIN -d $i -j ACCEPT
         done
 fi
