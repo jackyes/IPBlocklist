@@ -34,17 +34,17 @@ FIREHOL_WEBSERVER=0
 #(includes: ransomware_online sslbl_aggressive cybercrime atlas_phishing_2d atlas_fastflux_2d dyndns_ponmocup maxmind_proxy_fraud)
 FIREHOL_WEBCLIENT=1
 #____________________________
-# An ipset made from all sources that track open proxies. 
-# It includes IPs reported or detected in the last 30 days. (includes: iblocklist_proxies maxmind_proxy_fraud proxylists_30d 
-# proxyrss_30d proxz_30d proxyspy_30d ri_connect_proxies_30d ri_web_proxies_30d socks_proxy_30d sslproxies_30d xroxy_30d) 
+# An ipset made from all sources that track open proxies.
+# It includes IPs reported or detected in the last 30 days. (includes: iblocklist_proxies maxmind_proxy_fraud proxylists_30d
+# proxyrss_30d proxz_30d proxyspy_30d ri_connect_proxies_30d ri_web_proxies_30d socks_proxy_30d sslproxies_30d xroxy_30d)
 FIREHOL_PROXIES=0
 #____________________________
 # An ipset that includes all the anonymizing IPs of the world.
 # (includes: anonymous bm_tor dm_tor firehol_proxies tor_exits)
 FIREHOL_ANONYMOUS=0
 #____________________________
-# An ipset made from blocklists that track abusers in the last 24 hours. (includes: botscout_1d cleantalk_new_1d 
-# cleantalk_updated_1d php_commenters_1d php_dictionary_1d php_harvesters_1d php_spammers_1d stopforumspam_1d) 
+# An ipset made from blocklists that track abusers in the last 24 hours. (includes: botscout_1d cleantalk_new_1d
+# cleantalk_updated_1d php_commenters_1d php_dictionary_1d php_harvesters_1d php_spammers_1d stopforumspam_1d)
 FIREHOL_ABUSERS1D=0
 #____________________________
 # An ipset made from blocklists that track abusers in the last 30 days.
@@ -53,10 +53,10 @@ FIREHOL_ABUSERS1D=0
 FIREHOL_ABUSERS30D=0
 #____________________________
 # List of ip related to advertising and tracking
-YOYO_ADLIST=1
+YOYO_ADLIST=0
 #____________________________
-# EmergingThreats.net Command and Control IPs These IPs are updates every 24 hours and should be 
-# considered VERY highly reliable indications that a host is communicating with a known and active 
+# EmergingThreats.net Command and Control IPs These IPs are updates every 24 hours and should be
+# considered VERY highly reliable indications that a host is communicating with a known and active
 # Bot or Malware command and control server
 ET_BOTCC=1
 #____________________________
@@ -72,7 +72,7 @@ ENERGIZED_IPLIST=0
 ENABLE_REMOVING=2
 ##Add here ip to whitelist (all port). Only if ENABLE_REMOVING is set on 2
 if [ $ENABLE_REMOVING -eq "2" ]; then
-        declare -a WhitelistArray=( 192.168.1.0/24 127.0.0.1 )
+        declare -a WhitelistArray=( 192.168.1.0/24 127.0.0.1 172.17.0.0/16 )
 fi
 
 ##Set the iptables chain to block on
@@ -89,8 +89,9 @@ BASE="/etc"
 FOLDER_BL="sysconfig"
 BLACKLIST="$BASE/$FOLDER_BL/blocklist"
 WHITELIST="$BASE/$FOLDER_BL/whitelist" #Manually create this file
-PATHIPTABCONFIG="/root/iptables.save"  #Path to saved config (Generated with iptables-save, evrytime the script runs iptables is restored to normal state) 
+PATHIPTABCONFIG="/root/iptables.save"  #Path to saved config (Generated with iptables-save, evrytime the script runs iptables is restored to normal state)
 #___________________________________
+
 
 rm $BASE/$FOLDER_BL/bl.tmp
 rm $BASE/$FOLDER_BL/bl1.tmp
@@ -99,98 +100,98 @@ rm $BASE/$FOLDER_BL/blocklist1
 rm $BASE/$FOLDER_BL/blocklist
 
 if [ $FIREHOL_LEVEL1 -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level1.netset -O $BASE/$FOLDER_BL/firehol_level1.tmp
-        cat $BASE/$FOLDER_BL/firehol_level1.tmp > $BASE/$FOLDER_BL/bl.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level1.netset -O $BASE/$FOLDER_BL/firehol_level1.tmp
+        cat $BASE/$FOLDER_BL/firehol_level1.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_level1  %s \n"  `cat $BASE/$FOLDER_BL/firehol_level1.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_level1.tmp
 fi
 
 if [ $FIREHOL_LEVEL2 -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level2.netset -O $BASE/$FOLDER_BL/firehol_level2.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level2.netset -O $BASE/$FOLDER_BL/firehol_level2.tmp
         cat $BASE/$FOLDER_BL/firehol_level2.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_level2  %s \n"  `cat $BASE/$FOLDER_BL/firehol_level2.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_level2.tmp
 fi
 
 if [ $FIREHOL_LEVEL3 -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level3.netset -O $BASE/$FOLDER_BL/firehol_level3.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level3.netset -O $BASE/$FOLDER_BL/firehol_level3.tmp
                 cat $BASE/$FOLDER_BL/firehol_level3.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_level3  %s \n"  `cat $BASE/$FOLDER_BL/firehol_level3.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_level3.tmp
 fi
 
 if [ $FIREHOL_LEVEL4 -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level4.netset -O $BASE/$FOLDER_BL/firehol_level4.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level4.netset -O $BASE/$FOLDER_BL/firehol_level4.tmp
         cat $BASE/$FOLDER_BL/firehol_level4.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_level4  %s \n"  `cat $BASE/$FOLDER_BL/firehol_level4.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_level4.tmp
 fi
 
 if [ $FIREHOL_WEBSERVER -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_webserver.netset -O $BASE/$FOLDER_BL/firehol_webserver.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_webserver.netset -O $BASE/$FOLDER_BL/firehol_webserver.tmp
         cat $BASE/$FOLDER_BL/firehol_webserver.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_webserver  %s \n"  `cat $BASE/$FOLDER_BL/firehol_webserver.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_webserver.tmp
 fi
 
 if [ $FIREHOL_WEBCLIENT -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_webclient.netset -O $BASE/$FOLDER_BL/firehol_webclient.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_webclient.netset -O $BASE/$FOLDER_BL/firehol_webclient.tmp
         cat $BASE/$FOLDER_BL/firehol_webclient.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_webclient  %s \n"  `cat $BASE/$FOLDER_BL/firehol_webclient.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_webclient.tmp
 fi
 
 if [ $FIREHOL_PROXIES -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_proxies.netset -O $BASE/$FOLDER_BL/firehol_proxies.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_proxies.netset -O $BASE/$FOLDER_BL/firehol_proxies.tmp
         cat $BASE/$FOLDER_BL/firehol_proxies.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_proxies  %s \n"  `cat $BASE/$FOLDER_BL/firehol_proxies.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_proxies.tmp
 fi
 
 if [ $FIREHOL_ANONYMOUS -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_anonymous.netset -O $BASE/$FOLDER_BL/firehol_anonymous.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_anonymous.netset -O $BASE/$FOLDER_BL/firehol_anonymous.tmp
         cat $BASE/$FOLDER_BL/firehol_anonymous.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_anonymous  %s \n"  `cat $BASE/$FOLDER_BL/firehol_anonymous.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_anonymous.tmp
 fi
 
 if [ $FIREHOL_ABUSERS1D -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_abusers_1d.netset -O $BASE/$FOLDER_BL/firehol_abusers_1d.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_abusers_1d.netset -O $BASE/$FOLDER_BL/firehol_abusers_1d.tmp
         cat $BASE/$FOLDER_BL/firehol_abusers_1d.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_abusers_1d  %s \n"  `cat $BASE/$FOLDER_BL/firehol_abusers_1d.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_abusers_1d.tmp
 fi
 
 if [ $FIREHOL_ABUSERS30D -ne 0 ]; then
-        wget -t 3 --no-verbose https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_abusers_30d.netset -O $BASE/$FOLDER_BL/firehol_abusers_30d.tmp
+        wget -t 3 -q https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_abusers_30d.netset -O $BASE/$FOLDER_BL/firehol_abusers_30d.tmp
         cat $BASE/$FOLDER_BL/firehol_abusers_30d.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in firehol_abusers_30d  %s \n"  `cat $BASE/$FOLDER_BL/firehol_abusers_30d.tmp | wc -l`
         rm $BASE/$FOLDER_BL/firehol_abusers_30d.tmp
 fi
 
 if [ $YOYO_ADLIST -ne 0 ]; then
-        wget -t 3 --no-verbose "http://pgl.yoyo.org/adservers/iplist.php?ipformat=plain&showintro=0&mimetype=plaintext" -O $BASE/$FOLDER_BL/yoyo_ad.tmp
+        wget -t 3 -q "http://pgl.yoyo.org/adservers/iplist.php?ipformat=plain&showintro=0&mimetype=plaintext" -O $BASE/$FOLDER_BL/yoyo_ad.tmp
         cat $BASE/$FOLDER_BL/yoyo_ad.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in YOYO_ADLIST  %s \n"  `cat $BASE/$FOLDER_BL/yoyo_ad.tmp | wc -l`
         rm $BASE/$FOLDER_BL/yoyo_ad.tmp
 fi
 
 if [ $ET_BOTCC -ne 0 ]; then
-        wget -t 3 --no-verbose "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/et_botcc.ipset" -O $BASE/$FOLDER_BL/et_botcc.tmp
+        wget -t 3 -q "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/et_botcc.ipset" -O $BASE/$FOLDER_BL/et_botcc.tmp
         cat $BASE/$FOLDER_BL/et_botcc.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in ET_BOTCC  %s \n"  `cat $BASE/$FOLDER_BL/et_botcc.tmp | wc -l`
         rm $BASE/$FOLDER_BL/et_botcc.tmp
 fi
 
 if [ $ET_COMPROMISED -ne 0 ]; then
-        wget -t 3 --no-verbose "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/et_compromised.ipset" -O $BASE/$FOLDER_BL/et_compromised.tmp
+        wget -t 3 -q "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/et_compromised.ipset" -O $BASE/$FOLDER_BL/et_compromised.tmp
         cat $BASE/$FOLDER_BL/et_compromised.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in ET_COMPROMISED  %s \n"  `cat $BASE/$FOLDER_BL/et_compromised.tmp | wc -l`
         rm $BASE/$FOLDER_BL/et_compromised.tmp
 fi
 
 if [ $ENERGIZED_IPLIST -ne 0 ]; then
-        wget -t 3 --no-verbose "https://block.energized.pro/extensions/ips/formats/list.txt" -O $BASE/$FOLDER_BL/energ_ips.tmp
+        wget -t 3 -q "https://block.energized.pro/extensions/ips/formats/list.txt" -O $BASE/$FOLDER_BL/energ_ips.tmp
         cat $BASE/$FOLDER_BL/energ_ips.tmp >> $BASE/$FOLDER_BL/bl.tmp
         printf "\n Amount of lines in ENERGIZED_IPLIST  %s \n"  `cat $BASE/$FOLDER_BL/energ_ips.tmp | wc -l`
         rm $BASE/$FOLDER_BL/energ_ips.tmp
@@ -199,6 +200,7 @@ fi
 printf "\n Amount of lines in the combined blocklist before any cleanup is done %s \n"  `cat $BASE/$FOLDER_BL/bl.tmp | wc -l`
 printf "\n Remove comments etc."
 
+#grep -v '^#' $BASE/$FOLDER_BL/bl.tmp | sort | uniq > $BASE/$FOLDER_BL/bl.tmp
 cat $BASE/$FOLDER_BL/bl.tmp | sort | uniq > $BASE/$FOLDER_BL/bl1.tmp
 sed /#/d $BASE/$FOLDER_BL/bl1.tmp > $BASE/$FOLDER_BL/bl2.tmp
 
@@ -206,7 +208,8 @@ if [ $ENABLE_REMOVING -eq 1 ]
 then
         ### use this to remove ipadress or range from the blocklist (if needed)
         ### Add ip(s), one per line, in $BASE/$FOLDER_BL/whitelist
-        awk '{if (f==1) { r[$0] } else if (! ($0 in r)) { print $0 } } ' f=1 $BASE/$FOLDER_BL/whitelist f=2 $BASE/$FOLDER_BL/bl2.tmp > $BASE/$FOLDER_BL/blocklist1
+        #awk '{if (f==1) { r[$0] } else if (! ($0 in r)) { print $0 } } ' f=1 $BASE/$FOLDER_BL/whitelist f=2 $BASE/$FOLDER_BL/bl.tmp > $BASE/$FOLDER_BL/blocklist1
+        comm -23 $BASE/$FOLDER_BL/bl2.tmp $BASE/$FOLDER_BL/whitelist > $BASE/$FOLDER_BL/blocklist1
 else
         mv $BASE/$FOLDER_BL/bl2.tmp $BASE/$FOLDER_BL/blocklist1
 fi
@@ -221,9 +224,12 @@ date
 echo " Adding blocklist to ipset"
 $IPSET create -exist blocklist hash:net hashsize 16777216 maxelem 16777216
 $IPSET flush blocklist
-        for BLACKLIST in `cat $BLACKLIST`; do
-                $IPSET add  blocklist $BLACKLIST
-        done
+mapfile -t blocklist < $BASE/$FOLDER_BL/blocklist
+
+for BLACKLIST in "${blocklist[@]}"
+do
+$IPSET add blocklist $BLACKLIST
+done
 echo " Finish At:"
 date
 
