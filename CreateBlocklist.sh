@@ -239,7 +239,12 @@ $IPT -I $IPTABLESCHAIN -m set --match-set blocklist $BLOCKON -j DROP
 if [ $ENABLE_REMOVING -eq "2" ]
 then
         for i in "${WhitelistArray[@]}"
-                do
+        do
+                # Remove existing rules for this IP
+                while $IPT -D $IPTABLESCHAIN -s $i -j ACCEPT 2> /dev/null; do :; done
+                while $IPT -D $IPTABLESCHAIN -d $i -j ACCEPT 2> /dev/null; do :; done
+
+                # Add the new rules
                 $IPT -I $IPTABLESCHAIN -s $i -j ACCEPT
                 $IPT -I $IPTABLESCHAIN -d $i -j ACCEPT
         done
