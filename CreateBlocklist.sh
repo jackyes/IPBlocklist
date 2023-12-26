@@ -72,7 +72,7 @@ ENERGIZED_IPLIST=0
 ENABLE_REMOVING=2
 ##Add here ip to whitelist (all port). Only if ENABLE_REMOVING is set on 2
 if [ $ENABLE_REMOVING -eq "2" ]; then
-        declare -a WhitelistArray=( 192.168.1.0/24 127.0.0.1 172.17.0.0/16 )
+        declare -a WhitelistArray=( 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 )
 fi
 
 ##Set the iptables chain to block on
